@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Lab1.BirthdayApplication.Views.BirthdayFormView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Lab1.BirthdayApplication.ViewModels"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="400">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <xctk:DateTimePicker x:Name="BirthdayDtPicker"
+                                 Margin="5"
+                                 Value="{Binding Birthday}"
+                                 ShowButtonSpinner="False"
+                                 TextAlignment="Left"
+                                 Format="Custom"
+                                 Watermark="Select you birthday"    
+                                 FormatString="dd.MM.yyyy"
+                                 TimePickerVisibility="Hidden"/>
+            <TextBlock x:Name="AgeTextBlock"
+                       HorizontalAlignment="Left"
+                       TextAlignment="Center"
+                       Height="20"
+                       Margin="5"
+                       FontSize="12"
+                       Text="{Binding Age, StringFormat='Your age: {0}'}" />
+            <TextBlock x:Name="HappyBirthdayMessage"
+                       HorizontalAlignment="Left"
+                       TextAlignment="Center"
+                       Height="20"
+                       Margin="5"
+                       FontSize="12"
+                       Text="Happy Birthday!"
+                       Visibility="{Binding IsBirthday, Converter={StaticResource VisibilityConverter}}">
+            </TextBlock>
+            <TextBlock x:Name="WesternZodiacTextBlock"
+                       HorizontalAlignment="Left"
+                       TextAlignment="Center"
+                       Height="20"
+                       Margin="5"
+                       FontSize="12"
+                       Text="{Binding WesternZodiac, StringFormat='Western Zodiac: {0}'}" />
+            <TextBlock x:Name="ChineseZodiacTextBlock"
+                       HorizontalAlignment="Left"
+                       TextAlignment="Center"
+                       Height="20"
+                       Margin="5"
+                       FontSize="12"
+                       Text="{Binding ChineseZodiac, StringFormat='Chinese Zodiac: {0}'}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
