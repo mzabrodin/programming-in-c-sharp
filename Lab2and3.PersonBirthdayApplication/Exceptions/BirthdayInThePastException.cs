@@ -1,4 +1,4 @@
-namespace Lab2.PersonBirthdayApplication.Exceptions;
+namespace Lab2and3.PersonBirthdayApplication.Exceptions;
 
 public class BirthdayInThePastException : Exception
 {

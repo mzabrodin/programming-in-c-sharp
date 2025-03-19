@@ -1,9 +1,10 @@
 using System.Windows;
 using CommunityToolkit.Mvvm.Input;
-using Lab2.PersonBirthdayApplication.Extensions;
-using Lab2.PersonBirthdayApplication.Models;
+using Lab2and3.PersonBirthdayApplication.Extensions;
+using Lab2and3.PersonBirthdayApplication.Exceptions;
+using Lab2and3.PersonBirthdayApplication.Models;
 
-namespace Lab2.PersonBirthdayApplication.ViewModels;
+namespace Lab2and3.PersonBirthdayApplication.ViewModels;
 
 public class PersonInputViewModel : ViewModelBase
 {
@@ -95,7 +96,7 @@ public class PersonInputViewModel : ViewModelBase
     {
         IsLoading = true;
         Person = null;
-        await Task.Delay(2000);
+        await Task.Delay(1500);
         Person? person = await Task.Run(() =>
         {
             if (!IsPersonValid()) return null;
@@ -109,25 +110,67 @@ public class PersonInputViewModel : ViewModelBase
 
     private bool IsPersonValid()
     {
-        if (!Email.IsEmail())
+        #region NameValidation
+        try
         {
-            MessageBox.Show("Please enter a valid email address", "Error", MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            Name.ValidNameLength();
+            Name.StartsWithCapitalLetter();
+            Name.ContainsOnlyLetters();
+        }
+        catch (NameFormatException e)
+        {
+            MessageBoxErrorShow(e.Message);
+        }
+        #endregion
+        
+        #region SurnameValidation
+        try
+        {
+            Surname.ValidNameLength();
+            Surname.StartsWithCapitalLetter();
+            Surname.ContainsOnlyLetters();
+        }
+        catch (NameFormatException e)
+        {
+            MessageBoxErrorShow(e.Message);
+        }
+        #endregion
+        
+        #region EmailValidation
+        try
+        {
+            Email!.IsEmail();
+        }
+        catch (EmailFormatException e)
+        {
+            MessageBoxErrorShow(e.Message);
             return false;
         }
+        #endregion
 
-        int validateAge = Birthday!.Value.IsValidAge();
-        if (validateAge != 0)
+        #region BirthdayValidation
+        try
         {
-            MessageBox.Show(validateAge == 1
-                    ? "Birthday date cannot be in the future"
-                    : "Birthday date cannot be more than 135 years ago",
-                "Error",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            Birthday!.Value.IsValidAge();
+        }
+        catch (BirthdayInTheFutureException e)
+        {
+            MessageBoxErrorShow(e.Message);
             return false;
         }
+        catch (BirthdayInThePastException e)
+        {
+            MessageBoxErrorShow(e.Message);
+            return false;
+        }
+        #endregion
 
         return true;
+    }
+
+    private static void MessageBoxErrorShow(string message)
+    {
+        MessageBox.Show(message, "Error", MessageBoxButton.OK,
+            MessageBoxImage.Error);
     }
 }

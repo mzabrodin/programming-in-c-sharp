@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35818.85 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.BirthdayApplication", "Lab1.BirthdayApplication\Lab1.BirthdayApplication.csproj", "{90FDAA61-8746-4617-8045-E02A445B0F90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab2.PersonBirthdayApplication", "Lab2.PersonBirthdayApplication\Lab2.PersonBirthdayApplication.csproj", "{75953819-DAE4-423A-B6CA-142B5DF495A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab2and3.PersonBirthdayApplication", "Lab2and3.PersonBirthdayApplication\Lab2and3.PersonBirthdayApplication.csproj", "{75953819-DAE4-423A-B6CA-142B5DF495A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

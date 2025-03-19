@@ -2,7 +2,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Lab2.PersonBirthdayApplication.Convertors;
+namespace Lab2and3.PersonBirthdayApplication.Convertors;
 
 public class NullToVisibilityConverter : IValueConverter
 {

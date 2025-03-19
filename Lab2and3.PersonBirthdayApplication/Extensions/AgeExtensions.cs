@@ -1,4 +1,6 @@
-﻿namespace Lab2.PersonBirthdayApplication.Extensions;
+﻿using Lab2and3.PersonBirthdayApplication.Exceptions;
+
+namespace Lab2and3.PersonBirthdayApplication.Extensions;
 
 public static class AgeExtensions
 {
@@ -21,13 +23,13 @@ public static class AgeExtensions
         return date.Month == DateTime.Today.Month && date.Day == DateTime.Today.Day;
     }
 
-    public static int IsValidAge(this DateTime date)
+    public static bool IsValidAge(this DateTime date)
     {
         int age = date.GetAge();
-        if (age < 0) return 1;
+        if (age < 0) throw new BirthdayInTheFutureException();
 
-        if (age > 135) return -1;
+        if (age > 135) throw new BirthdayInThePastException();
 
-        return 0;
+        return true;
     }
 }

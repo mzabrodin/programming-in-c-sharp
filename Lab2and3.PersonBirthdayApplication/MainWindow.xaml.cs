@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Lab2.PersonBirthdayApplication;
+namespace Lab2and3.PersonBirthdayApplication;
 
 /// <summary>
 ///     Interaction logic for MainWindow.xaml

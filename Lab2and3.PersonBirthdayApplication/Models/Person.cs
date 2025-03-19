@@ -1,6 +1,6 @@
-using Lab2.PersonBirthdayApplication.Extensions;
+using Lab2and3.PersonBirthdayApplication.Extensions;
 
-namespace Lab2.PersonBirthdayApplication.Models;
+namespace Lab2and3.PersonBirthdayApplication.Models;
 
 public class Person
 {

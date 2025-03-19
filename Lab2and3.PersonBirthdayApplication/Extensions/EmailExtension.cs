@@ -1,8 +1,8 @@
 using System.Net.Mail;
 using System.Text.RegularExpressions;
-using Lab2.PersonBirthdayApplication.Exceptions;
+using Lab2and3.PersonBirthdayApplication.Exceptions;
 
-namespace Lab2.PersonBirthdayApplication.Extensions;
+namespace Lab2and3.PersonBirthdayApplication.Extensions;
 
 public static class EmailExtension
 {
@@ -10,7 +10,7 @@ public static class EmailExtension
     {
         if (email.EndsWith('.'))
         {
-            return false;
+            throw new EmailFormatException();
         }
         
         try
@@ -20,7 +20,7 @@ public static class EmailExtension
         }
         catch (FormatException)
         {
-            return false;
+            throw new EmailFormatException();
         }
     }
 }

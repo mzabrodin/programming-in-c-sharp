@@ -1,4 +1,4 @@
-﻿namespace Lab2.PersonBirthdayApplication.Models;
+﻿namespace Lab2and3.PersonBirthdayApplication.Models;
 
 public enum WesternZodiac
 {

@@ -1,7 +1,7 @@
 using System.Windows.Controls;
-using Lab2.PersonBirthdayApplication.ViewModels;
+using Lab2and3.PersonBirthdayApplication.ViewModels;
 
-namespace Lab2.PersonBirthdayApplication.Views;
+namespace Lab2and3.PersonBirthdayApplication.Views;
 
 /// <summary>
 ///     Interaction logic for PersonInputView.xaml

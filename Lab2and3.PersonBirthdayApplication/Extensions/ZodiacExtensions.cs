@@ -1,6 +1,6 @@
-﻿using Lab2.PersonBirthdayApplication.Models;
+﻿using Lab2and3.PersonBirthdayApplication.Models;
 
-namespace Lab2.PersonBirthdayApplication.Extensions;
+namespace Lab2and3.PersonBirthdayApplication.Extensions;
 
 public static class ZodiacExtensions
 {
