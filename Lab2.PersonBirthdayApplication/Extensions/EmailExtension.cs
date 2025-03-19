@@ -8,6 +8,11 @@ public static class EmailExtension
 {
     public static bool IsEmail(this string email)
     {
+        if (email.EndsWith('.'))
+        {
+            return false;
+        }
+        
         try
         {
             var mailAddress = new MailAddress(email);
