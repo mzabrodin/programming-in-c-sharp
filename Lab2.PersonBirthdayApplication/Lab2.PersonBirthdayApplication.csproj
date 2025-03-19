@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Update="Views\BirthdayFormView.xaml.cs">
+            <SubType>Code</SubType>
+            <DependentUpon>BirthdayFormView.xaml</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
+        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25103.5738"/>
+    </ItemGroup>
+
+</Project>
