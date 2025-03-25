@@ -120,6 +120,7 @@ public class PersonInputViewModel : ViewModelBase
         catch (NameFormatException e)
         {
             MessageBoxErrorShow(e.Message);
+            return false;
         }
         #endregion
         
@@ -133,6 +134,7 @@ public class PersonInputViewModel : ViewModelBase
         catch (NameFormatException e)
         {
             MessageBoxErrorShow(e.Message);
+            return false;
         }
         #endregion
         
