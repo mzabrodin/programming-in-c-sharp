@@ -5,12 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab4.PersonList"
         xmlns:views="clr-namespace:Lab4.PersonList.Views"
+        xmlns:viewsModels="clr-namespace:Lab4.PersonList.ViewModels"
+        xmlns:convertors="clr-namespace:Lab4.PersonList.Convertors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Lab04 - Person List"
+        MinHeight="600"
+        MinWidth="1000"
+        d:DataContext="{d:DesignInstance Type=viewsModels:MainWindowViewModel, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewsModels:PersonListViewModel}">
+            <views:PersonsListView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewsModels:PersonCreateViewModel}">
+            <views:PersonCreateView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewsModels:PersonEditViewModel}">
+            <views:PersonEditView />
+        </DataTemplate>
+        <convertors:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"
+                                                 TrueVisibility="Visible"
+                                                 FalseVisibility="Hidden" />
+    </Window.Resources>
     <Grid>
-        <views:PersonInputView Height="Auto"
-                               MinHeight="150"
-                               Width="Auto"
-                               MinWidth="175"/>
+        <Grid>
+            <ContentControl Content="{Binding CurrentViewModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+
     </Grid>
 </Window>

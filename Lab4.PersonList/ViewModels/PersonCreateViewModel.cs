@@ -3,27 +3,32 @@ using CommunityToolkit.Mvvm.Input;
 using Lab4.PersonList.Exceptions;
 using Lab4.PersonList.Extensions;
 using Lab4.PersonList.Models;
+using Lab4.PersonList.Navigation;
+using Lab4.PersonList.Services;
 
 namespace Lab4.PersonList.ViewModels;
 
-public class PersonInputViewModel : ViewModelBase
+public class PersonCreateViewModel : ViewModelBase, INavigatable<MainNavigationType>
 {
+    private readonly Action _goToPersonList;
+    private readonly PersonService _personService = new();
     private bool _isLoading;
+
+    #region Person Fields
+
     private string _name = String.Empty;
     private string _surname = String.Empty;
     private string _email = String.Empty;
     private DateTime? _birthday;
     private Person? _person;
 
-    public PersonInputViewModel()
+    #endregion
+
+    public PersonCreateViewModel(Action goToPersonList)
     {
-        ProceedCommand = new AsyncRelayCommand(Proceed, CanExecute);
-#if DEBUG
-        Name = "John";
-        Surname = "Doe";
-        Email = "johndoe@gmail.com";
-        Birthday = new DateTime(2000, 1, 1);
-#endif
+        _goToPersonList = goToPersonList;
+        PersonCreateCommand = new AsyncRelayCommand(Create, CanCreate);
+        BackCommand = new RelayCommand(goToPersonList);
     }
 
     public bool IsLoading
@@ -38,7 +43,7 @@ public class PersonInputViewModel : ViewModelBase
         set
         {
             SetField(ref _name, value);
-            ProceedCommand.NotifyCanExecuteChanged();
+            PersonCreateCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -48,7 +53,7 @@ public class PersonInputViewModel : ViewModelBase
         set
         {
             SetField(ref _surname, value);
-            ProceedCommand.NotifyCanExecuteChanged();
+            PersonCreateCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -58,7 +63,7 @@ public class PersonInputViewModel : ViewModelBase
         set
         {
             SetField(ref _email, value);
-            ProceedCommand.NotifyCanExecuteChanged();
+            PersonCreateCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -68,7 +73,7 @@ public class PersonInputViewModel : ViewModelBase
         set
         {
             SetField(ref _birthday, value);
-            ProceedCommand.NotifyCanExecuteChanged();
+            PersonCreateCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -78,13 +83,14 @@ public class PersonInputViewModel : ViewModelBase
         set
         {
             SetField(ref _person, value);
-            ProceedCommand.NotifyCanExecuteChanged();
+            PersonCreateCommand.NotifyCanExecuteChanged();
         }
     }
 
-    public AsyncRelayCommand ProceedCommand { get; }
+    public AsyncRelayCommand PersonCreateCommand { get; }
+    public RelayCommand BackCommand { get; }
 
-    private bool CanExecute()
+    private bool CanCreate()
     {
         return !String.IsNullOrEmpty(Name) &&
                !String.IsNullOrEmpty(Surname) &&
@@ -92,10 +98,9 @@ public class PersonInputViewModel : ViewModelBase
                Birthday.HasValue;
     }
 
-    private async Task Proceed()
+    private async Task Create()
     {
         IsLoading = true;
-        Person = null;
         await Task.Delay(1500);
         Person? person = await Task.Run(() =>
         {
@@ -105,72 +110,49 @@ public class PersonInputViewModel : ViewModelBase
         });
 
         Person = person;
+        try
+        {
+            _personService.CreatePerson(person);
+        }
+        catch (Exception e) when (e is PersonNullException or PersonAlreadyExistsException)
+        {
+            MessageBoxTypes.MessageBoxErrorShow(e.Message);
+            IsLoading = false;
+            return;
+        }
+
+        MessageBoxTypes.MessageBoxSuccessShow("Person created successfully");
+
         IsLoading = false;
+        _goToPersonList();
     }
 
     private bool IsPersonValid()
     {
-        #region NameValidation
         try
         {
             Name.ValidNameLength();
             Name.StartsWithCapitalLetter();
             Name.ContainsOnlyLetters();
-        }
-        catch (NameFormatException e)
-        {
-            MessageBoxErrorShow(e.Message);
-        }
-        #endregion
-        
-        #region SurnameValidation
-        try
-        {
+
             Surname.ValidNameLength();
             Surname.StartsWithCapitalLetter();
             Surname.ContainsOnlyLetters();
-        }
-        catch (NameFormatException e)
-        {
-            MessageBoxErrorShow(e.Message);
-        }
-        #endregion
-        
-        #region EmailValidation
-        try
-        {
-            Email!.IsEmail();
-        }
-        catch (EmailFormatException e)
-        {
-            MessageBoxErrorShow(e.Message);
-            return false;
-        }
-        #endregion
 
-        #region BirthdayValidation
-        try
-        {
+            Email.IsEmail();
+
             Birthday!.Value.IsValidAge();
         }
-        catch (BirthdayInTheFutureException e)
+        catch (Exception e) when (e is NameFormatException or EmailFormatException or BirthdayInTheFutureException
+                                      or BirthdayInThePastException)
         {
-            MessageBoxErrorShow(e.Message);
+            MessageBoxTypes.MessageBoxErrorShow(e.Message);
             return false;
         }
-        catch (BirthdayInThePastException e)
-        {
-            MessageBoxErrorShow(e.Message);
-            return false;
-        }
-        #endregion
 
         return true;
     }
 
-    private static void MessageBoxErrorShow(string message)
-    {
-        MessageBox.Show(message, "Error", MessageBoxButton.OK,
-            MessageBoxImage.Error);
-    }
+
+    public MainNavigationType ViewModelType => MainNavigationType.PersonCreate;
 }
