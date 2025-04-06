@@ -120,6 +120,17 @@ namespace Lab4.PersonList.ViewModels
         private async Task Filter()
         {
             IsLoading = true;
+            
+            if (_filterListProperty is PersonListProperty.IsAdult or PersonListProperty.IsBirthday)
+            {
+                _filterText = FilterText switch
+                {
+                    "Yes" => "true",
+                    "No" => "false",
+                    _ => FilterText
+                };
+            }
+            
             await Task.Delay(1000);
             await Task.Run(() =>
             {
@@ -160,9 +171,8 @@ namespace Lab4.PersonList.ViewModels
 
         private bool CanReset()
         {
-            if (_sortListProperty != PersonListProperty.None) return true;
-            if (_filterListProperty == PersonListProperty.None) return false;
-            return !String.IsNullOrWhiteSpace(_filterText);
+            return _sortListProperty != PersonListProperty.None ||
+                   _filterListProperty != PersonListProperty.None;
         }
 
         private object GetKey(Person person, PersonListProperty personListProperty)
