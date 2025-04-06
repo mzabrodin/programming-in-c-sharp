@@ -120,7 +120,7 @@ namespace Lab4.PersonList.ViewModels
         private async Task Filter()
         {
             IsLoading = true;
-            
+
             if (_filterListProperty is PersonListProperty.IsAdult or PersonListProperty.IsBirthday)
             {
                 _filterText = FilterText switch
@@ -130,7 +130,7 @@ namespace Lab4.PersonList.ViewModels
                     _ => FilterText
                 };
             }
-            
+
             await Task.Delay(1000);
             await Task.Run(() =>
             {
